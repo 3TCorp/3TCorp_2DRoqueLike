@@ -8,8 +8,32 @@ public class User2DController : MonoBehaviour
 {
 	private PlatformerCharacter2D m_Character;
 	private bool m_Jump;
+	private bool _inputButtonJump;
+	private bool _inputButtonCrouch;
+
 
 	public VirtualJoystick joystick;
+
+	public void ButtonCrouchDown()
+	{
+		_inputButtonCrouch = true;
+	}
+
+	public void ButtonCrouchUp()
+	{
+		_inputButtonCrouch = false;
+	}
+
+
+	public void ButtonJumpDown()
+	{
+		_inputButtonJump = true;
+	}
+
+	public void ButtonJumpUp()
+	{
+		_inputButtonJump = false;
+	}
 
 	private void Awake()
 	{
@@ -23,7 +47,7 @@ public class User2DController : MonoBehaviour
 		{
 			// Read the jump input in Update so button presses aren't missed.
 			//m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
-			m_Jump = joystick.GetAxis("Vertical") > 0.5;
+			m_Jump = _inputButtonJump;
 		}
 	}
 
@@ -31,7 +55,7 @@ public class User2DController : MonoBehaviour
 	private void FixedUpdate()
 	{
 		// Read the inputs.
-		bool crouch = joystick.GetAxis ("Vertical") < -0.5;
+		bool crouch = _inputButtonCrouch;
 		float h = joystick.GetAxis ("Horizontal");//CrossPlatformInputManager.GetAxis("Horizontal");
 		// Pass all parameters to the character control script.
 		m_Character.Move(h, crouch, m_Jump);
